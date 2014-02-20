@@ -1,0 +1,27 @@
+{
+  "name": "run-thing",
+  "version": "0.0.0",
+  "description": "A thing that runs things?",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:mpj/run-thing.git"
+  },
+  "keywords": [
+    "spec",
+    "runner"
+  ],
+  "devDependencies": {
+    "mocha": "~1.17.1",
+    "chai": "~1.9.0"
+  },
+  "author": "Mattias Petter Johansson <mpj@mpj.me>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mpj/run-thing/issues"
+  },
+  "homepage": "https://github.com/mpj/run-thing"
+}
