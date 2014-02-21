@@ -6,6 +6,8 @@ var runThing = require('./')
 var run = runThing.run
 var focus = runThing.focus
 
+var colors = require('colors')
+
 // TODO: Error if multiple spec
 // TODO: constructor
 // TODO: error if no bus or no spec
@@ -57,8 +59,13 @@ it('focusing on single, OK spec', function() {
   bus.on('c').then('d')
 
   run(suite, bus).raw.should.equal(
-    "Injected: 'c'\n" +
-    "Received: 'c'\n" +
-    "Fulfilled: 'd'\n"
+    " Injected ".inverse + " c\n" +
+    '\n' +
+    " Received ".inverse + " c\n" +
+    "     Sent ".inverse + " d\n" +
+    '\n' +
+    " Verified ".inverse.green + " d\n" +
+    '\n'
     )
 })
+

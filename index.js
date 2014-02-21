@@ -1,4 +1,5 @@
 var find = require('mout/array/find')
+var colors = require('colors');
 
 module.exports = {
   run: function(suite, bus) {
@@ -22,17 +23,19 @@ module.exports = {
         if (entry.injected && entry.injected[0] === 'spec-run') return;
         if (entry.injected && entry.injected[0] === 'spec-check') return;
         if (entry.received && entry.received[0] && entry.received[0][0] === 'spec-run') {
-          me.raw += "Injected: '" + entry.sent[0][0] + "'\n"
+          me.raw += " Injected ".inverse +  " " + entry.sent[0][0] + "\n"
+          me.raw += "\n"
         } else if (entry.sent && entry.sent.length > 0 && entry.sent[0][0] === 'expectation-ok') {
-          me.raw += "Fulfilled: '" + entry.sent[0][1] + "'\n"
+          me.raw += " Verified ".inverse.green + " " +  entry.sent[0][1] + "\n"
+          me.raw += "\n"
         } else if (entry.received && entry.received[0][0] === 'spec-check') {
           // show unexpected later
           return
         } else if (entry.received) {
-          me.raw += "Received: '" + entry.received[0][0] + "'\n"
+          me.raw += " Received ".inverse + ' ' + entry.received[0][0] + "\n"
+          me.raw += "     Sent ".inverse + ' ' + entry.sent[0][0] + "\n"
+          me.raw += "\n"
         }
-
-
       })
     } else {
       Object.keys(suite).forEach(function(specName) {
