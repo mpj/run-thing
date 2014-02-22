@@ -24,23 +24,28 @@ module.exports = {
         if (entry.injected && entry.injected[0] === 'spec-run') return;
         if (entry.injected && entry.injected[0] === 'spec-check') return;
         if (entry.received && entry.received[0] && entry.received[0][0] === 'spec-run') {
-          me.raw += " Injected ".inverse +  " " + entry.sent[0][0] + "\n"
+          me.raw += " Injected ".inverse +  " " + entry.delivered[0][0] + "\n"
           me.raw += "\n"
-        } else if (entry.sent && entry.sent.length > 0 && entry.sent[0][0] === 'expectation-ok') {
-          me.raw += " Verified ".inverse.green + " " +  entry.sent[0][1] + "\n"
+        } else if (entry.undelivered && entry.undelivered.length > 0 && entry.undelivered[0][0] === 'expectation-ok') {
+          me.raw += " Verified ".inverse.green + " " +  entry.undelivered[0][1] + "\n"
           me.raw += "\n"
         } else if (entry.received && entry.received[0][0] === 'spec-check') {
-          if (entry.sent && entry.sent.length > 0 && entry.sent[0][0] === 'expectation-failure')
-            me.raw += " Expected ".inverse.red + " " + entry.sent[0][1][0] + '\n'
+          if (entry.undelivered && entry.undelivered.length > 0 && entry.undelivered[0][0] === 'expectation-failure')
+            me.raw += " Expected ".inverse.red + " " + entry.undelivered[0][1][0] + '\n'
           return
+        } else if (entry.unhandled) {
+          if (entry.unhandled[0] === 'spec-check') return;
+
+          me.raw += " Unhandled ".inverse.yellow + " " + entry.unhandled[0] + '\n'
         } else if (entry.received) {
           me.raw += " Received ".inverse + ' ' + entry.received[0][0] + "\n"
-          me.raw += "     Sent ".inverse + ' ' + entry.sent[0][0]
-          var renderedMessage = prettyjson.render(entry.sent[0][1], {})
+          var sent = (entry.delivered || []).concat(entry.undelivered || [])
+          me.raw += "     Sent ".inverse + ' ' + sent[0][0]
+          var renderedMessage = prettyjson.render(sent[0][1], {})
           if (renderedMessage.indexOf('\n') === -1)
             me.raw += ' = ' + renderedMessage + '\n'
           else
-            me.raw += "\n" +prettyjson.render(entry.sent[0][1], {}, "     Sent ".length+1)
+            me.raw += "\n" +prettyjson.render(sent[0][1], {}, "     Sent ".length+1)
           me.raw += "\n"
         }
       })

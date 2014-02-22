@@ -13,6 +13,10 @@ var prettyjson = require('prettyjson')
 // TODO: constructor
 // TODO: error if no bus or no spec
 // TODO: Pretty pending erros
+// TODO: Narrower tests
+// TODO: Rename run-spec to spec-injects?
+//
+// Hmmm, perhaps sent + received should be collapsed?
 
 it('runs a suite with a single, implemented, spec', function() {
   var bus = createBus()
@@ -60,7 +64,8 @@ it('focusing on single, OK spec', function() {
   bus.on('a').then('b')
   bus.on('c').then('d')
 
-  run(suite, bus).raw.should.equal(
+  var raw = run(suite, bus).raw
+  var expected =
     " Injected ".inverse + " c\n" +
     '\n' +
     " Received ".inverse + " c\n" +
@@ -68,7 +73,8 @@ it('focusing on single, OK spec', function() {
     '\n' +
     " Verified ".inverse.green + " d\n" +
     '\n'
-    )
+
+  raw.should.equal(expected)
 })
 
 it('focusing on single, failing spec', function() {
@@ -86,14 +92,14 @@ it('focusing on single, failing spec', function() {
   bus.on('a').then('b')
   bus.on('c').then('X')
 
-  run(suite, bus).raw.should.equal(
+  var expected =
     " Injected ".inverse + " c\n" +
     '\n' +
     " Received ".inverse + " c\n" +
     "     Sent ".inverse + " X = " + prettyjson.render(true) +  "\n" +
     '\n' +
     " Expected ".inverse.red + " d\n"
-    )
+  run(suite, bus).raw.should.equal(expected)
 })
 
 it('renders messages prettified (sent)', function() {
