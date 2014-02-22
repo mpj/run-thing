@@ -6,11 +6,13 @@ var runThing = require('./')
 var run = runThing.run
 var focus = runThing.focus
 
-var colors = require('colors')
+var colors     = require('colors')
+var prettyjson = require('prettyjson')
 
 // TODO: Error if multiple spec
 // TODO: constructor
 // TODO: error if no bus or no spec
+// TODO: Pretty pending erros
 
 it('runs a suite with a single, implemented, spec', function() {
   var bus = createBus()
@@ -62,7 +64,7 @@ it('focusing on single, OK spec', function() {
     " Injected ".inverse + " c\n" +
     '\n' +
     " Received ".inverse + " c\n" +
-    "     Sent ".inverse + " d\n" +
+    "     Sent ".inverse + " d = " + prettyjson.render(true) + "\n" +
     '\n' +
     " Verified ".inverse.green + " d\n" +
     '\n'
@@ -88,9 +90,33 @@ it('focusing on single, failing spec', function() {
     " Injected ".inverse + " c\n" +
     '\n' +
     " Received ".inverse + " c\n" +
-    "     Sent ".inverse + " X\n" +
+    "     Sent ".inverse + " X = " + prettyjson.render(true) +  "\n" +
     '\n' +
     " Expected ".inverse.red + " d\n"
     )
+})
+
+it('renders messages prettified (sent)', function() {
+  var bus = createBus()
+  bus.on('start').then('hello', {
+    propNumber: 123,
+    propString: 'hello'
+  })
+  var suite = {
+    'should say hello': focus(spec())
+      .given('start')
+  }
+
+  run(suite, bus).raw.should.contain(
+    "     Sent ".inverse + ' hello\n' +
+    prettyjson.render({
+      propNumber: 123,
+      propString: 'hello'
+    }, {}, 11)
+
+    )
+
+
+
 })
 

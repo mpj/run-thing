@@ -1,5 +1,6 @@
 var find = require('mout/array/find')
 var colors = require('colors');
+var prettyjson = require('prettyjson')
 
 module.exports = {
   run: function(suite, bus) {
@@ -34,7 +35,12 @@ module.exports = {
           return
         } else if (entry.received) {
           me.raw += " Received ".inverse + ' ' + entry.received[0][0] + "\n"
-          me.raw += "     Sent ".inverse + ' ' + entry.sent[0][0] + "\n"
+          me.raw += "     Sent ".inverse + ' ' + entry.sent[0][0]
+          var renderedMessage = prettyjson.render(entry.sent[0][1], {})
+          if (renderedMessage.indexOf('\n') === -1)
+            me.raw += ' = ' + renderedMessage + '\n'
+          else
+            me.raw += "\n" +prettyjson.render(entry.sent[0][1], {}, "     Sent ".length+1)
           me.raw += "\n"
         }
       })
