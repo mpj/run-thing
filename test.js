@@ -69,3 +69,28 @@ it('focusing on single, OK spec', function() {
     )
 })
 
+it('focusing on single, failing spec', function() {
+  var bus = createBus()
+  var suite = {
+    'expect b if a': spec()
+      .given('a')
+      .expect('b'),
+
+    'expect d if c': focus(spec())
+      .given('c')
+      .expect('d')
+  }
+
+  bus.on('a').then('b')
+  bus.on('c').then('X')
+
+  run(suite, bus).raw.should.equal(
+    " Injected ".inverse + " c\n" +
+    '\n' +
+    " Received ".inverse + " c\n" +
+    "     Sent ".inverse + " X\n" +
+    '\n' +
+    " Expected ".inverse.red + " d\n"
+    )
+})
+

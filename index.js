@@ -29,7 +29,8 @@ module.exports = {
           me.raw += " Verified ".inverse.green + " " +  entry.sent[0][1] + "\n"
           me.raw += "\n"
         } else if (entry.received && entry.received[0][0] === 'spec-check') {
-          // show unexpected later
+          if (entry.sent && entry.sent.length > 0 && entry.sent[0][0] === 'expectation-failure')
+            me.raw += " Expected ".inverse.red + " " + entry.sent[0][1][0] + '\n'
           return
         } else if (entry.received) {
           me.raw += " Received ".inverse + ' ' + entry.received[0][0] + "\n"

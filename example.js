@@ -8,10 +8,8 @@ var bus = createBus();
 bus.on('a').then('b')
 
 var suite = {
-  'yeah some spec': focus(spec()).given('a').expect('b')
+  'yeah some spec': focus(spec()).given('a').expect('c')
 }
-
-
 
 console.log(run(suite, bus).raw)
 
