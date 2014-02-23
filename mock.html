@@ -1,0 +1,333 @@
+<html>
+<head>
+  <link rel="stylesheet" href="inspector-json.css">
+  <link rel="stylesheet" href="bootstrap.min.css">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="bootstrap-theme.min.css">
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+  <style>
+  html {
+    background-color: #d7d7da;
+  }
+  body, div, span, p {
+    background: none;
+    font-family: HelveticaNeue-Light, 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+
+  html {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+
+    .log-entry {
+      background-color: white;
+      padding: 0;
+      margin-bottom: 60px;
+      position: relative;
+      display: inline-block;
+      float:left;
+      margin-right: 30px;
+    }
+
+    .worker-container {
+      position: relative;
+      color: white;
+      background-color: black;
+      text-align: left;
+      padding-left:  1.5%;
+      font-size: 22px;
+      line-height: 40px;
+      margin-bottom: 15px;
+      display: inline-block;
+      width: 100%;
+      overflow-x: scroll;
+    }
+
+    .worker-container .arrow-container-top {
+      position: absolute;
+      top:0;
+      right: 5%;
+      height: 100%;
+    }
+
+    .worker-container .arrow-container-bottom {
+      position: absolute;
+      bottom:0;
+      left: 5%;
+      height: 100%;
+    }
+
+    .worker-container .arrow-container-top .arrow {
+      position: relative;
+      top: 0;
+      left: -50%;
+      width: 0;
+      height: 0;
+      border-left: 20px solid transparent;
+      border-right: 20px solid transparent;
+      border-top: 8px solid;
+      border-top-color: white;
+    }
+
+    .worker-container .arrow-container-bottom .arrow {
+      position: relative;
+      top: 100%;
+      left: -50%;
+      width: 0;
+      height: 0;
+      border-left: 20px solid transparent;
+      border-right: 20px solid transparent;
+      border-top: 8px solid;
+      border-top-color: black;
+    }
+
+    .triggered, .send-attempts {
+      display: inline-block;
+      padding: 20px;
+    }
+    .trigger, .attempt {
+      float:left;
+      margin-right: 30px;
+    }
+    .trigger .type,
+    .attempt .status
+     {
+      font-size: 12px;
+      padding:4px;
+      margin: 0;
+      line-height: 12px;
+      color: gray;
+      background-color: #363636;
+      color: #f5f5f5;
+      margin-bottom: 1px;
+    }
+    .trigger .envelope .address,
+    .attempt .envelope .address {
+      font-size: 23px;
+      line-height: 23px;
+    }
+    .inspector-json {
+      /* override */
+      padding: 0;
+      padding-top: 6px;
+    }
+
+    .transform {
+      background-color: #363636;
+      width: 60px;
+      height: 42px;
+      float: left;
+      margin-right: 20px;
+      margin-bottom: 20px;
+      color: white;
+      text-align: center;
+      font-size: 24px;
+    }
+
+    .attempt .status.undelivered {
+      background-color: #ff6c00;
+    }
+
+    .attempt .status.expected {
+      background-color: green;
+    }
+    .attempt .status.expected.failed {
+      background-color: red;
+    }
+
+    .send-attempts {
+      clear: both;
+      display: inline-block;;
+    }
+
+    .note {
+      background-color: #ffe2cc;
+      display: inline-block;
+      border-left: 6px solid #ff6c00;
+      padding: 20px 10px 20px 10px;
+    }
+
+
+  </style>
+
+
+</head>
+
+<body>
+
+  <div class="">
+
+    <div class="log-entry">
+
+      <div class="worker-container">
+        1. Given
+        <div class="arrow-container-bottom">
+          <div class="arrow"></div>
+        </div>
+
+      </div>
+      <div class="send-attempts">
+
+        <div class="attempt">
+          <div class="status">Delivered</div>
+          <div class="envelope">
+            <div class="address">start</div>
+            <div class="message">
+              <div data-json-inspector='{"hat":true}'></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="log-entry">
+
+      <div class="worker-container">
+        2. Some worker
+      </div>
+
+      <div class="triggered">
+        <div class="trigger">
+          <div class="type">change</div>
+          <div class="envelope">
+            <div class="address">start</div>
+            <div class="message">
+              <div data-json-inspector='{"visits":1,"impressions":0,"transactions":0,"revenue":0,"clicks":0,"spent":0,"path":{"service":"organic","campaign":"(not set)","ad":"(not set)","keyword":"värmedyna ohb"},"yearWeek":"2014-1","_userId":"y5v59pgyd5Qzc6EXe"}'></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="trigger">
+          <div class="type">change</div>
+          <div class="envelope">
+            <div class="address">loading-result</div>
+            <div class="message">
+              <div data-json-inspector='{"hat":true}'></div>
+            </div>
+          </div>
+        </div>
+
+        <hr style="clear:both" />
+
+        <div class="attempt">
+          <div class="status delivered">Delivered</div>
+          <div class="envelope">
+            <div class="address">request-result</div>
+            <div class="message">
+              <div data-json-inspector='{"hat":true}'></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="attempt">
+          <div class="status undelivered">Undeliverable</div>
+
+          <div class="envelope">
+            <div class="address">initializing</div>
+            <div class="message">
+              <div data-json-inspector='{"hat":true}'></div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+    </div>
+
+
+     <div class="log-entry">
+
+        <div class="worker-container">
+          3. Check
+          <div class="arrow-container-bottom">
+            <div class="arrow"></div>
+          </div>
+
+        </div>
+        <div class="send-attempts">
+
+          <div class="attempt">
+            <div class="status expected failed">Expectation Failed</div>
+            <div class="envelope">
+              <div class="address">start</div>
+              <div class="message">
+                <div data-json-inspector='{"hat":true}'></div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="attempt">
+            <div class="status expected">Expectation OK</div>
+            <div class="envelope">
+              <div class="address">lulz-long-address</div>
+              <div class="message">
+                <div data-json-inspector='{"hat":true}'></div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+
+      <div class="log-entry">
+
+        <div class="worker-container">
+          4. Check
+          <div class="arrow-container-bottom">
+            <div class="arrow"></div>
+          </div>
+
+        </div>
+        <div class="send-attempts">
+
+          <div class="attempt">
+            <div class="status expected failed">Expectation Failed</div>
+            <div class="envelope">
+              <div class="address">start</div>
+              <div class="message">
+                <div data-json-inspector='{"hat":true}'></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+  </div>
+
+
+
+
+
+
+
+
+
+  <script src="jquery-1.11.0.min.js"></script>
+  <script src="bootstrap.min.js"></script>
+  <script src="inspector-json.js">
+  </script>
+  <script>
+  $('*[data-json-inspector]').each(function(_, element) {
+    var inspector = new InspectorJSON({
+      element: element,
+      json: $(element).attr('data-json-inspector'),
+      collapsed: false
+  });
+  })
+
+  </script>
+  <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+</body>
+</html>
+

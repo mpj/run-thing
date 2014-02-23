@@ -121,8 +121,7 @@ it('renders messages prettified (sent)', function() {
     }, {}, 11)
 
     )
-
-
-
 })
+
+it('renders se')
 
