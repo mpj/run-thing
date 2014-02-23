@@ -1,0 +1,79 @@
+<html>
+<head>
+  <link rel="stylesheet" href="inspector-json.css">
+  <link rel="stylesheet" href="runner.css">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,900|Lato:100,300,400,700,900,700italic|PT+Sans:400,700' rel='stylesheet' type='text/css'>
+
+
+
+</head>
+
+<body>
+
+  <div class="log-entry">
+    <div class="header">Given<div class="ordinal">01</div></div>
+
+<div class="divider-container">
+        <div class="divider">&nbsp;</div>
+        <div class="text-container"><span>Received</span></div>
+      </div>
+
+    <div class="deliveries">
+
+
+
+      <div class="delivery">
+        <div class="status"><span>On</span></div>
+        <div class="address">start-long-long-long</div>
+        <div class="message" data-json-inspector='{"hej":true}'></div>
+      </div>
+      <div class="delivery">
+        <div class="status"><span>Change</span></div>
+        <div class="address">start-long</div>
+        <div class="message" data-json-inspector='{"hej":true,"hej2":true,"hej3":true,"hej4":true,"hej5": { "heja": { "hejb": { "hejk": 328932832982393, "hejc": { "nisse": "123" } } } } }'></div>
+      </div>
+    </div>
+
+    <div class="divider-container">
+      <div class="divider">&nbsp;</div>
+      <div class="text-container"><span>Sent</span></div>
+    </div>
+
+    <div class="deliveries">
+      <div class="delivery">
+        <div class="status"><span>Delivered</span></div>
+        <div class="address">start-long-long</div>
+        <div class="message" data-json-inspector='{"hej":true}'></div>
+      </div>
+      <div class="delivery">
+        <div class="status shaky"><span>Delivered</span></div>
+        <div class="address">start-long</div>
+        <div class="message" data-json-inspector='{"hej":true,"hej2":true,"hej3":true,"hej4":true,"hej5": { "heja": { "hejb": { "hejk": 328932832982393, "hejc": { "nisse": "123" } } } } }'></div>
+      </div>
+      <div class="delivery">
+        <div class="status shaky"><span>Delivered</span></div>
+        <div class="address">start-long</div>
+        <div class="message" data-json-inspector='{"hej":true,"hej2":true,"hej3":true,"hej4":true,"hej5": { "heja": { "hejb": { "hejk": 328932832982393, "hejc": { "nisse": "123" } } } } }'></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="inspector-json.js"></script>
+  <script src="jquery-1.11.0.min.js"></script>
+  <script src="inspector-json.js"></script>
+  <script>
+  $('*[data-json-inspector]').each(function(_, element) {
+    var inspector = new InspectorJSON({
+      element: element,
+      json: $(element).attr('data-json-inspector'),
+      collapsed: false
+    });
+  })
+  </script>
+  <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+</body>
+</html>
+
