@@ -9,7 +9,9 @@ var pretty = require('./pretty-thing')
 // and yields a view model ready for rendering
 // in an interface
 //
-// TODO: Not delivered
+// TODO: not delivered = shaky look
+// TODO: expectation ok = good look
+// TODO: expectation failed = bad look
 // TODO: Test for change statustext normalization
 
 
@@ -30,7 +32,6 @@ describe('When we render the log from a simple case', function() {
   })
 
   it('should filter injector', function() {
-    console.log(JSON.stringify(vm,null,2))
     vm[0].sender.name.should.not.equal('injector')
   })
 
@@ -46,6 +47,10 @@ describe('When we render the log from a simple case', function() {
     vm[0].sent[0].statusText.should.equal('Delivered')
   })
 
+  it('should display delivered deliveries as normal status', function() {
+    vm[0].sent[0].statusLook.should.equal('normal')
+  })
+
   it('should translate null sender to anon', function() {
     vm[1].sender.nameFormatted.should.equal('Anonymous')
   })
@@ -58,11 +63,20 @@ describe('When we render the log from a simple case', function() {
     vm[2].sender.nameFormatted.should.equal('Expectation success')
   })
 
+  it('should display successful expectations as good', function() {
+    vm[2].sent[0].statusLook.should.equal('good')
+  })
+
+  it('should display successful expectations as "expected"', function() {
+    vm[2].sent[0].statusText.should.equal('Expected')
+  })
+
 })
 
 it('should translate couldDeliver (false) to statusText', function() {
   var vm = pretty(createBus().on('a').then('b').inject('a').log.all())
   vm[0].sent[0].statusText.should.equal('Undeliverable')
+  vm[0].sent[0].statusLook.should.equal('shaky')
 })
 
 

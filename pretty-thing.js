@@ -19,6 +19,12 @@ var pretty = function(logEntries) {
       entry.sent = entry.sent.map(function(delivery) {
         delivery.statusText =
           delivery.couldDeliver ? 'Delivered' : 'Undeliverable'
+        delivery.statusLook = delivery.couldDeliver ?
+          'normal' : 'shaky'
+        if (delivery.envelope.address === 'expectation-ok') {
+          delivery.statusText = 'Expected'
+          delivery.statusLook = 'good'
+        }
         return delivery
       })
 
