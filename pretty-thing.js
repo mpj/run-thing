@@ -4,12 +4,12 @@ var space = require('to-space-case')
 var pretty = function(logEntries) {
   return logEntries
     .filter(function(entry) {
-      if (entry.sender.name === 'injector')
+      if (entry.worker.name === 'injector')
         return false
       return true
     })
     .map(function(entry) {
-      if (entry.sender.name === 'given')
+      if (entry.worker.name === 'given')
         entry.received = []
 
       entry.received = entry.received.map(function(delivery) {
@@ -17,21 +17,27 @@ var pretty = function(logEntries) {
         return delivery;
       })
       entry.sent = entry.sent.map(function(delivery) {
+
+        delivery.jsonData = JSON.stringify(delivery.envelope.message)
+
+        if (delivery.logOnly) {
+          delivery.statusText = 'Logged'
+          delivery.statusLook = 'normal'
+          return delivery
+        }
+
         delivery.statusText =
           delivery.couldDeliver ? 'Delivered' : 'Undeliverable'
         delivery.statusLook = delivery.couldDeliver ?
           'normal' : 'shaky'
-        if (delivery.envelope.address === 'expectation-ok') {
-          delivery.statusText = 'Expected'
-          delivery.statusLook = 'good'
-        }
+
         return delivery
       })
 
-      entry.sender.nameFormatted =
-        entry.sender.name === null
+      entry.worker.nameFormatted =
+        entry.worker.name === null
         ? 'Anonymous'
-        : capitalize(space(entry.sender.name))
+        : capitalize(space(entry.worker.name))
       return entry
     })
 

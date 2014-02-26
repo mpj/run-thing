@@ -36,15 +36,40 @@ var createBus = function() {
   me.log = {
     all: function() { return logEntries },
     wasSent: function(address, message) {
-      return !!find(logEntries, function(entry) {
-        return !!find(entry.sent, function(delivery) {
-          if (address !== delivery.envelope.address)
+      return me.log.worker(null).didSend(address, message)
+    },
+    wasLogged: function(address, message) {
+      return me.log.worker(null).didLog(address, message)
+    },
+    worker: function(didSenderName) {
+      function didSendOrLog(type, didAddress, didMessage) {
+        return !!find(logEntries, function(entry) {
+          if (!!didSenderName && didSenderName !== entry.worker.name)
             return false
-          if (message && !deepEqual(message, delivery.envelope.message))
-            return false
-          return true
+
+          return !!find(entry.sent, function(delivery) {
+
+            if (type === 'log' && !delivery.logOnly)
+              return false
+
+            if (type === 'send' && !!delivery.logOnly)
+              return false
+
+            if (didAddress !== delivery.envelope.address)
+              return false
+
+            if (!!didMessage &&
+                 !deepEqual(didMessage, delivery.envelope.message))
+              return false
+            return true
+          })
         })
-      })
+      }
+      var cmd = {
+        didSend: partial(didSendOrLog, 'send'),
+        didLog:  partial(didSendOrLog, 'log')
+      }
+      return cmd
     }
   }
 
@@ -137,7 +162,7 @@ var createBus = function() {
 
       var logEntry = {
         received: receivedDeliveries,
-        sender: {
+        worker: {
           name: handler.worker.name === '' ? null : handler.worker.name
         },
         sent: []
@@ -189,7 +214,7 @@ var createBus = function() {
         'Use this.send instead.')
 
     var logEntry = {
-      sender: {
+      worker: {
         name: 'injector'
       },
       sent: []
@@ -806,24 +831,20 @@ module.exports = function() {
           var simulateMessage = ins[4]
 
           var isOk = false
-          bus.on(expectedAddress).then(function expectationSuccess(actualMessage) {
-            if (actualMessage === expectedMessage || isUndefined(expectedMessage)) {
+          bus.on(expectedAddress).then(function expectationMet(actualMessage) {
+            if (actualMessage === expectedMessage || isUndefined(expectedMessage)) { // TODO: try removing this if
               isOk = true
               if (simulateAddress) {
                 this.send(simulateAddress,
                   isUndefined(simulateMessage) ? true : simulateMessage )
               }
-              this.log('expectation-ok',
-                isUndefined(expectedMessage) ?
-                [ expectedAddress ] :
-                [ expectedAddress, expectedMessage ])
+              this.log(expectedAddress, expectedMessage)
             }
           })
 
-          bus.on('spec-done').then(function expectationFailure() {
+          bus.on('spec-done').then(function expectationNotMet() {
             if(!isOk)
-              this.log('expectation-failure',
-                [ expectedAddress, expectedMessage ])
+              this.log(expectedAddress, expectedMessage)
           })
         }
 
@@ -943,12 +964,12 @@ var space = require('to-space-case')
 var pretty = function(logEntries) {
   return logEntries
     .filter(function(entry) {
-      if (entry.sender.name === 'injector')
+      if (entry.worker.name === 'injector')
         return false
       return true
     })
     .map(function(entry) {
-      if (entry.sender.name === 'given')
+      if (entry.worker.name === 'given')
         entry.received = []
 
       entry.received = entry.received.map(function(delivery) {
@@ -956,15 +977,27 @@ var pretty = function(logEntries) {
         return delivery;
       })
       entry.sent = entry.sent.map(function(delivery) {
+
+        delivery.jsonData = JSON.stringify(delivery.envelope.message)
+
+        if (delivery.logOnly) {
+          delivery.statusText = 'Logged'
+          delivery.statusLook = 'normal'
+          return delivery
+        }
+
         delivery.statusText =
           delivery.couldDeliver ? 'Delivered' : 'Undeliverable'
+        delivery.statusLook = delivery.couldDeliver ?
+          'normal' : 'shaky'
+
         return delivery
       })
 
-      entry.sender.nameFormatted =
-        entry.sender.name === null
+      entry.worker.nameFormatted =
+        entry.worker.name === null
         ? 'Anonymous'
-        : capitalize(space(entry.sender.name))
+        : capitalize(space(entry.worker.name))
       return entry
     })
 
