@@ -1,5 +1,6 @@
 var capitalize = require('capitalize')
 var space = require('to-space-case')
+var isBoolean = require('mout/lang/isBoolean')
 
 var pretty = function(logEntries) {
   return logEntries
@@ -23,7 +24,10 @@ var pretty = function(logEntries) {
         })
       entry.sent = entry.sent.map(function(delivery) {
 
-        delivery.jsonData = JSON.stringify(delivery.envelope.message)
+        if (isBoolean(delivery.envelope.message))
+          delivery.stringBoolean = delivery.envelope.message.toString()
+        else
+          delivery.stringJSON = JSON.stringify(delivery.envelope.message)
 
         if (delivery.logOnly) {
           delivery.statusText = 'Logged'

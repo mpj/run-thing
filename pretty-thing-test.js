@@ -13,6 +13,11 @@ var pretty = require('./pretty-thing')
 
 
 // TODO: Show primitive messages as different
+// TODO: string* should probably be on the envelope
+// TODO: Hide expectationNotMet if it sends nothing.
+// Perhaps this is something that the worker itself could
+// be allowed to do? this.stealth()
+//
 // TODO: Remove duplication in template
 // TODO: Test for change statustext normalization
 //
@@ -108,7 +113,7 @@ describe('given that we render a log from complex send', function() {
   })
 
   it('should render the message as JSON', function() {
-    vm[0].sent[0].jsonData.should.equal(JSON.stringify({
+    vm[0].sent[0].stringJSON.should.equal(JSON.stringify({
       values: [123, 'poop']
     }))
   })
@@ -133,6 +138,26 @@ it('should display failing expectations as bad', function() {
   // Should filter out triggering expectation
   // TODO: Piggybacking, should be expectation
   vm[1].received.length.should.equal(0)
+})
+
+describe('given a worker that sends an expected false', function() {
+  var vm;
+  beforeEach(function() {
+    var bus = createBus()
+    bus.on('a').then('b', false)
+    spec()
+      .given('a')
+      .expect('b', false)
+      .check(bus)
+    vm = pretty(bus.log.all())
+  })
+
+  it('should render as stringBoolean', function() {
+    vm[0].sent[0].stringBoolean.should.equal('true')
+    vm[1].sent[0].stringBoolean.should.equal('false')
+    vm[2].sent[0].stringBoolean.should.equal('false')
+  })
+
 })
 
 
