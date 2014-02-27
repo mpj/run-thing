@@ -140,44 +140,97 @@ it('should display failing expectations as bad', function() {
   vm[1].received.length.should.equal(0)
 })
 
-describe('given a worker that sends an expected false', function() {
-  var vm;
+
+describe('given that we have a worker that sends and expects a given value', function() {
+  var exec;
+  var givenValue;
+  var sendsValue;
+
+  var entryGivenSent;
+  var entryWorkerSent;
+  var entryExpectSent;
+
   beforeEach(function() {
     var bus = createBus()
-    bus.on('a').then('b', false)
-    spec()
-      .given('a')
-      .expect('b', false)
-      .check(bus)
-    vm = pretty(bus.log.all())
+    exec = function() {
+      bus
+        .on('a', givenValue)
+        .then('b', sendsValue)
+      spec()
+        .given('a', givenValue)
+        .expect('b', sendsValue)
+        .check(bus)
+      var vm = pretty(bus.log.all())
+      entryGivenSent  = vm[0].sent[0]
+      entryWorkerSent = vm[1].sent[0]
+      entryExpectSent = vm[2].sent[0]
+    }
   })
 
-  it('should render as stringBoolean', function() {
-    vm[0].sent[0].stringBoolean.should.equal('true')
-    vm[1].sent[0].stringBoolean.should.equal('false')
-    vm[2].sent[0].stringBoolean.should.equal('false')
+  describe('if that value is a boolean', function() {
+    beforeEach(function() {
+      givenValue = false
+      sendsValue = true
+      exec()
+    })
+
+    it('formats the given worker entry message', function() {
+      entryGivenSent.stringBoolean.should.equal('false')
+    })
+
+    it('formats the main worker entry message', function() {
+      entryWorkerSent.stringBoolean.should.equal('true')
+    })
+
+    it('formats the expectation worker entry message', function() {
+      entryExpectSent.stringBoolean.should.equal('true')
+    })
+
   })
+
+  describe('if that value is a boolean', function() {
+    beforeEach(function() {
+      givenValue = 1234
+      sendsValue = 5678
+      exec()
+    })
+
+    it('formats the given worker entry message', function() {
+      entryGivenSent.stringNumber.should.equal('1234')
+    })
+
+    it('formats the main worker entry message', function() {
+      entryWorkerSent.stringNumber.should.equal('5678')
+    })
+
+    it('formats the expectation worker entry message', function() {
+      entryExpectSent.stringNumber.should.equal('5678')
+    })
+
+  })
+
+  describe('if that value is a string', function() {
+    beforeEach(function() {
+      givenValue = 'haibox'
+      sendsValue = 'yay'
+      exec()
+    })
+
+    it('formats the given worker entry message', function() {
+      entryGivenSent.stringString.should.equal('haibox')
+    })
+
+    it('formats the main worker entry message', function() {
+      entryWorkerSent.stringString.should.equal('yay')
+    })
+
+    it('formats the expectation worker entry message', function() {
+      entryExpectSent.stringString.should.equal('yay')
+    })
+
+  })
+
 })
-
-describe('given a worker that sends an expected number', function() {
-  var vm;
-  beforeEach(function() {
-    var bus = createBus()
-    bus.on('a').then('b', 1234)
-    spec()
-      .given('a', 7891)
-      .expect('b', 1234)
-      .check(bus)
-    vm = pretty(bus.log.all())
-  })
-
-  it('should render as stringNumber', function() {
-    vm[0].sent[0].stringNumber.should.equal('7891')
-    vm[1].sent[0].stringNumber.should.equal('1234')
-    vm[2].sent[0].stringNumber.should.equal('1234')
-  })
-})
-
 
 
 function dbg(vm) {
