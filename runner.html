@@ -37,12 +37,6 @@
               <div className="ordinal">{ordinal}</div>
             </div>
 
-            <div className="divider-container">
-              <div className="divider">&nbsp;</div>
-              <div className="text-container">
-                <span>Received</span>
-              </div>
-            </div>
 
             <div className="deliveries">
               {entry.received.map(function(delivery) {
@@ -57,18 +51,7 @@
                   )
                 })
               }
-            </div>
-
-            <div className="divider-container">
-              <div className="divider">&nbsp;</div>
-              <div className="text-container">
-                <span>Sent</span>
-              </div>
-            </div>
-
-            <div className="deliveries">
               {entry.sent.map(function(delivery) {
-                console.log('delivery', delivery)
                   var classes = 'status' + ' ' + delivery.statusLook
                   return (
                     <div className="delivery">
@@ -80,6 +63,10 @@
                   )
                 })
               }
+            </div>
+
+            <div className="deliveries">
+
             </div>
 
           </div>
@@ -94,7 +81,7 @@
   var bus = createBus()
 
   bus.on('a').then('c')
-  bus.on('c').then(function() {
+  bus.on('c').then(function wafflel() {
     this.send('d', { poop: 123})
     this.send('d', { poop: 123})
     this.send('d', { poop: 123})
@@ -102,7 +89,7 @@
   })
   spec()
     .given('a')
-    .expect('e')
+    .expect('d')
     .check(bus)
 
   var vm = pretty(bus.log.all())

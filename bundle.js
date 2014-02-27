@@ -972,10 +972,15 @@ var pretty = function(logEntries) {
       if (entry.worker.name === 'given')
         entry.received = []
 
-      entry.received = entry.received.map(function(delivery) {
-        delivery.statusText = 'on'
-        return delivery;
-      })
+      entry.received = entry.received
+        .filter(function(delivery) {
+          if (entry.worker.name === 'expectationMet' ||
+              entry.worker.name === 'expectationNotMet') return false
+          return true
+        }).map(function(delivery) {
+          delivery.statusText = 'on'
+          return delivery;
+        })
       entry.sent = entry.sent.map(function(delivery) {
 
         delivery.jsonData = JSON.stringify(delivery.envelope.message)

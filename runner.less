@@ -13,7 +13,7 @@ html {
   float: left;
   margin-right: 15px;
   margin-bottom: 15px;
-  padding-bottom: 15px;
+  max-width: 500px;
 
   .header {
     background-color: black;
@@ -32,43 +32,12 @@ html {
     }
   }
 
-  .divider-container {
-    width: 100%;
-    position: relative;
-    display: inline-block;
-    margin-top: 24px;
-    margin-bottom: 7px;
-    .divider {
-      position: absolute;
-      background-color: #d5d5d5;
-      left: 15px;
-      top:0;
-      right: 15px;
-      display: block;
-      height: 1px;
-    }
-    .text-container {
-      position: absolute;
-      left: 25px;
-      top: -6px;
-      line-height: 13px;
-      font-size: 13px;
-      text-align: left;
-      span {
-        color: #d5d5d5;
-        font-family: 'Lato', HelveticaNeue-Medium, 'Helvetica Neue Medium', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-        background-color: white;
-        padding-right: 5px;
-        padding-left: 5px;
-      }
-    }
-  }
-
   .deliveries {
-    padding: 10px 0 20px 30px;
+    padding: 15px 0 20px 30px;
     .delivery {
       display: inline-block;
       margin-right: 30px;
+      margin-bottom: 15px;
       float: left;
 
       .address {

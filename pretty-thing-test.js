@@ -11,13 +11,20 @@ var pretty = require('./pretty-thing')
 //
 
 
+
 // TODO: Show primitive messages as different
-// TODO: Filter out message triggering Expectation not met
-// TODO: Hide received if empty
 // TODO: Remove duplication in template
 // TODO: Test for change statustext normalization
+//
+// IDEA: Headers too long and big, making small messages
+// have more whitespace than they need.
 // IDEA: Make deliveries more visually distinct (color?)
 // to allow for flowing layout merging sent and received.
+// Just having sent and logged items have a slightly different
+// color might actually do it. Another way is to change the labeling
+// of stuff to something more intuitive, such as wasSent, newSend
+// wasChanged, WasChangedOnce, wasTruthy?
+// IDEA: Hide "Logged" status in Expectation worker logs?
 
 // TODO: Show failing worker as bad
 // TODO: Show met worker as good
@@ -81,6 +88,10 @@ describe('When we render the log from a simple case', function() {
     vm[2].sent[0].statusText.should.equal('Logged')
   })
 
+  it('should filter out the message triggering expecations not met', function() {
+    vm[2].received.length.should.equal(0)
+  })
+
 })
 
 describe('given that we render a log from complex send', function() {
@@ -119,7 +130,16 @@ it('should display failing expectations as bad', function() {
   vm[1].sent[0].statusText.should.equal('Logged')
   vm[1].sent[0].statusLook.should.equal('normal')
 
+  // Should filter out triggering expectation
+  // TODO: Piggybacking, should be expectation
+  vm[1].received.length.should.equal(0)
 })
 
+
+function dbg(vm) {
+  console.log('')
+  console.log('--- DEBUG ---')
+  console.log(JSON.stringify(vm, null, 2))
+}
 
 

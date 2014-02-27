@@ -132,7 +132,7 @@ html {
   float: left;
   margin-right: 15px;
   margin-bottom: 15px;
-  padding-bottom: 15px;
+  max-width: 500px;
 }
 .log-entry .header {
   background-color: black;
@@ -150,43 +150,13 @@ html {
   padding-left: 25px;
   font-family: 'Lato', HelveticaNeue-Medium, 'Helvetica Neue Medium', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
-.log-entry .divider-container {
-  width: 100%;
-  position: relative;
-  display: inline-block;
-  margin-top: 24px;
-  margin-bottom: 7px;
-}
-.log-entry .divider-container .divider {
-  position: absolute;
-  background-color: #d5d5d5;
-  left: 15px;
-  top: 0;
-  right: 15px;
-  display: block;
-  height: 1px;
-}
-.log-entry .divider-container .text-container {
-  position: absolute;
-  left: 25px;
-  top: -6px;
-  line-height: 13px;
-  font-size: 13px;
-  text-align: left;
-}
-.log-entry .divider-container .text-container span {
-  color: #d5d5d5;
-  font-family: 'Lato', HelveticaNeue-Medium, 'Helvetica Neue Medium', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  background-color: white;
-  padding-right: 5px;
-  padding-left: 5px;
-}
 .log-entry .deliveries {
-  padding: 10px 0 20px 30px;
+  padding: 15px 0 20px 30px;
 }
 .log-entry .deliveries .delivery {
   display: inline-block;
   margin-right: 30px;
+  margin-bottom: 15px;
   float: left;
 }
 .log-entry .deliveries .delivery .address {
