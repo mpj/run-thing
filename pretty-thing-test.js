@@ -157,8 +157,27 @@ describe('given a worker that sends an expected false', function() {
     vm[1].sent[0].stringBoolean.should.equal('false')
     vm[2].sent[0].stringBoolean.should.equal('false')
   })
-
 })
+
+describe('given a worker that sends an expected number', function() {
+  var vm;
+  beforeEach(function() {
+    var bus = createBus()
+    bus.on('a').then('b', 1234)
+    spec()
+      .given('a', 7891)
+      .expect('b', 1234)
+      .check(bus)
+    vm = pretty(bus.log.all())
+  })
+
+  it('should render as stringNumber', function() {
+    vm[0].sent[0].stringNumber.should.equal('7891')
+    vm[1].sent[0].stringNumber.should.equal('1234')
+    vm[2].sent[0].stringNumber.should.equal('1234')
+  })
+})
+
 
 
 function dbg(vm) {

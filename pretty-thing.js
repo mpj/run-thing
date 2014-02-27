@@ -1,6 +1,7 @@
 var capitalize = require('capitalize')
 var space = require('to-space-case')
 var isBoolean = require('mout/lang/isBoolean')
+var isNumber = require('mout/lang/isNumber')
 
 var pretty = function(logEntries) {
   return logEntries
@@ -26,6 +27,8 @@ var pretty = function(logEntries) {
 
         if (isBoolean(delivery.envelope.message))
           delivery.stringBoolean = delivery.envelope.message.toString()
+        else if(isNumber(delivery.envelope.message))
+          delivery.stringNumber = delivery.envelope.message.toString()
         else
           delivery.stringJSON = JSON.stringify(delivery.envelope.message)
 
