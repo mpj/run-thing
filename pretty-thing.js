@@ -28,13 +28,15 @@ var pretty = function(logEntries) {
 
         var message = delivery.envelope.message
         if (isBoolean(message))
-          delivery.messageBoolean = '' + message
+          delivery.messageClass = 'boolean'
         else if(isNumber(message))
-          delivery.messageNumber = '' + message.toString()
+          delivery.messageClass = 'number'
         else if(isString(message))
-          delivery.messageString = message
-        else
-          delivery.messageJSON = JSON.stringify(message)
+          delivery.messageClass = 'string'
+        else {
+          delivery.messageClass = 'object'
+          delivery.envelope.message = JSON.stringify(message)
+        }
 
         if (delivery.logOnly) {
           delivery.statusText = 'Logged'
