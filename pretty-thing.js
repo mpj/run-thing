@@ -26,14 +26,15 @@ var pretty = function(logEntries) {
         })
       entry.sent = entry.sent.map(function(delivery) {
 
-        if (isBoolean(delivery.envelope.message))
-          delivery.stringBoolean = delivery.envelope.message.toString()
-        else if(isNumber(delivery.envelope.message))
-          delivery.stringNumber = delivery.envelope.message.toString()
-        else if(isString(delivery.envelope.message))
-          delivery.stringString = delivery.envelope.message
+        var message = delivery.envelope.message
+        if (isBoolean(message))
+          delivery.messageBoolean = '' + message
+        else if(isNumber(message))
+          delivery.messageNumber = '' + message.toString()
+        else if(isString(message))
+          delivery.messageString = message
         else
-          delivery.stringJSON = JSON.stringify(delivery.envelope.message)
+          delivery.messageJSON = JSON.stringify(message)
 
         if (delivery.logOnly) {
           delivery.statusText = 'Logged'

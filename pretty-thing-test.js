@@ -112,11 +112,6 @@ describe('given that we render a log from complex send', function() {
     vm = pretty(entries)
   })
 
-  it('should render the message as JSON', function() {
-    vm[0].sent[0].stringJSON.should.equal(JSON.stringify({
-      values: [123, 'poop']
-    }))
-  })
 })
 
 it('should translate couldDeliver (false) to statusText', function() {
@@ -175,15 +170,15 @@ describe('given that we have a worker that sends and expects a given value', fun
     })
 
     it('formats the given worker entry message', function() {
-      entryGivenSent.stringBoolean.should.equal('false')
+      entryGivenSent.messageBoolean.should.equal('false')
     })
 
     it('formats the main worker entry message', function() {
-      entryWorkerSent.stringBoolean.should.equal('true')
+      entryWorkerSent.messageBoolean.should.equal('true')
     })
 
     it('formats the expectation worker entry message', function() {
-      entryExpectSent.stringBoolean.should.equal('true')
+      entryExpectSent.messageBoolean.should.equal('true')
     })
 
   })
@@ -196,15 +191,15 @@ describe('given that we have a worker that sends and expects a given value', fun
     })
 
     it('formats the given worker entry message', function() {
-      entryGivenSent.stringNumber.should.equal('1234')
+      entryGivenSent.messageNumber.should.equal('1234')
     })
 
     it('formats the main worker entry message', function() {
-      entryWorkerSent.stringNumber.should.equal('5678')
+      entryWorkerSent.messageNumber.should.equal('5678')
     })
 
     it('formats the expectation worker entry message', function() {
-      entryExpectSent.stringNumber.should.equal('5678')
+      entryExpectSent.messageNumber.should.equal('5678')
     })
 
   })
@@ -217,15 +212,36 @@ describe('given that we have a worker that sends and expects a given value', fun
     })
 
     it('formats the given worker entry message', function() {
-      entryGivenSent.stringString.should.equal('haibox')
+      entryGivenSent.messageString.should.equal('haibox')
     })
 
     it('formats the main worker entry message', function() {
-      entryWorkerSent.stringString.should.equal('yay')
+      entryWorkerSent.messageString.should.equal('yay')
     })
 
     it('formats the expectation worker entry message', function() {
-      entryExpectSent.stringString.should.equal('yay')
+      entryExpectSent.messageString.should.equal('yay')
+    })
+
+  })
+
+  describe('if that value is an object', function() {
+    beforeEach(function() {
+      givenValue = { a: [ 1, 'b' ]}
+      sendsValue = { c: { d: 4 }}
+      exec()
+    })
+
+    it('formats the given worker entry message', function() {
+      entryGivenSent.messageJSON.should.equal(JSON.stringify(givenValue))
+    })
+
+    it('formats the main worker entry message', function() {
+      entryWorkerSent.messageJSON.should.equal(JSON.stringify(sendsValue))
+    })
+
+    it('formats the expectation worker entry message', function() {
+      entryExpectSent.messageJSON.should.equal(JSON.stringify(sendsValue))
     })
 
   })
