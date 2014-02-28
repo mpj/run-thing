@@ -11,9 +11,8 @@ var pretty = require('./pretty-thing')
 //
 
 
+// TODO: Clean up tests and duplication
 
-// TODO: Show primitive messages as different
-// TODO: string* should probably be on the envelope
 // TODO: Hide expectationNotMet if it sends nothing.
 // Perhaps this is something that the worker itself could
 // be allowed to do? this.stealth()
@@ -142,8 +141,11 @@ describe('given that we have a worker that sends and expects a given value', fun
   var sendsValue;
 
   var entryGivenSent;
+
+  var entryWorker;
   var entryWorkerSent;
   var entryExpectSent;
+
 
   beforeEach(function() {
     var bus = createBus()
@@ -156,7 +158,9 @@ describe('given that we have a worker that sends and expects a given value', fun
         .expect('b', sendsValue)
         .check(bus)
       var vm = pretty(bus.log.all())
+
       entryGivenSent  = vm[0].sent[0]
+      entryWorker     = vm[1]
       entryWorkerSent = vm[1].sent[0]
       entryExpectSent = vm[2].sent[0]
     }
@@ -177,8 +181,13 @@ describe('given that we have a worker that sends and expects a given value', fun
       entryWorkerSent.messageClass.should.equal('boolean')
     })
 
+
     it('formats the expectation worker entry message', function() {
       entryExpectSent.messageClass.should.equal('boolean')
+    })
+
+    it('formats the main worker entry received messages too', function() {
+      entryWorker.received[0].messageClass.should.equal('boolean')
     })
 
   })
@@ -223,6 +232,13 @@ describe('given that we have a worker that sends and expects a given value', fun
       entryExpectSent.messageClass.should.equal('string')
     })
 
+    it('welds on double quotes (sent)', function() {
+      entryWorkerSent.envelope.message.should.equal('"yay"')
+    })
+    it('welds on double quotes (sent)', function() {
+      entryWorker.received[0].envelope.message.should.equal('"haibox"')
+    })
+
   })
 
   describe('if that value is an object', function() {
@@ -248,6 +264,7 @@ describe('given that we have a worker that sends and expects a given value', fun
     })
 
   })
+
 
 })
 

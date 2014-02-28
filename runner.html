@@ -37,28 +37,29 @@
               <div className="ordinal">{ordinal}</div>
             </div>
 
-
             <div className="deliveries">
               {entry.received.map(function(delivery) {
-
+                  var statusClasses = 'status' + ' ' + delivery.statusLook;
+                  var messageClasses = 'message ' + delivery.messageClass;
                   return (
                     <div className="delivery">
-                      <div className="status {delivery.look}">
+                      <div className={statusClasses}>
                         <span>{delivery.statusText}</span></div>
                       <div className="address">{delivery.envelope.address}</div>
-                      <div className="message" data-json-inspector={delivery.jsonData}></div>
+                      <div className={messageClasses}>{delivery.envelope.message.toString()}</div>
                     </div>
                   )
                 })
               }
               {entry.sent.map(function(delivery) {
-                  var classes = 'status' + ' ' + delivery.statusLook
+                  var statusClasses = 'status' + ' ' + delivery.statusLook
+                  var messageClasses = 'message ' + delivery.messageClass;
                   return (
                     <div className="delivery">
-                      <div className={classes}>
+                      <div className={statusClasses}>
                         <span>{delivery.statusText}</span></div>
                       <div className="address">{delivery.envelope.address}</div>
-                      <div className="message" data-json-inspector={delivery.jsonData}></div>
+                      <div className={messageClasses}>{delivery.envelope.message.toString()}</div>
                     </div>
                   )
                 })
@@ -82,9 +83,9 @@
 
   bus.on('a').then('c')
   bus.on('c').then(function wafflel() {
-    this.send('d', { poop: 123})
-    this.send('d', { poop: 123})
-    this.send('d', { poop: 123})
+    this.send('d', 'i am a little teaot and im ok and long')
+    this.send('d', 9272)
+    this.send('d', { poop: 123, pee: false, poor: true, hai: 'nooo'})
     this.send('d', { poop: 123})
   })
   spec()
@@ -97,10 +98,10 @@
     <LogEntries entries={vm} />,
     document.getElementById('renderTarget')
   );
-  $('*[data-json-inspector]').each(function(_, element) {
+  $('.message.object').each(function(_, element) {
     var inspector = new InspectorJSON({
       element: element,
-      json: $(element).attr('data-json-inspector'),
+      json: $(element).text(),
       collapsed: true
     });
   })

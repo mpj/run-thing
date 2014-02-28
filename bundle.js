@@ -2,7 +2,7 @@
 createBus = require('bus-thing')
 spec = require('spec-thing')
 pretty = require('./pretty-thing')
-},{"./pretty-thing":32,"bus-thing":2,"spec-thing":29}],2:[function(require,module,exports){
+},{"./pretty-thing":37,"bus-thing":2,"spec-thing":34}],2:[function(require,module,exports){
 var isArray = require('mout/lang/isArray')
 var pluck = require('mout/array/pluck')
 var find = require('mout/array/find')
@@ -791,12 +791,46 @@ module.exports.words = function (string) {
 }
 
 },{}],26:[function(require,module,exports){
+var isKind = require('./isKind');
+    /**
+     */
+    function isBoolean(val) {
+        return isKind(val, 'Boolean');
+    }
+    module.exports = isBoolean;
+
+
+},{"./isKind":27}],27:[function(require,module,exports){
+module.exports=require(18)
+},{"./kindOf":30}],28:[function(require,module,exports){
+var isKind = require('./isKind');
+    /**
+     */
+    function isNumber(val) {
+        return isKind(val, 'Number');
+    }
+    module.exports = isNumber;
+
+
+},{"./isKind":27}],29:[function(require,module,exports){
+var isKind = require('./isKind');
+    /**
+     */
+    function isString(val) {
+        return isKind(val, 'String');
+    }
+    module.exports = isString;
+
+
+},{"./isKind":27}],30:[function(require,module,exports){
+module.exports=require(20)
+},{}],31:[function(require,module,exports){
 module.exports=require(11)
-},{}],27:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 module.exports=require(14)
-},{"../array/slice":26}],28:[function(require,module,exports){
+},{"../array/slice":31}],33:[function(require,module,exports){
 module.exports=require(19)
-},{}],29:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 var partial = require('mout/function/partial')
 var isUndefined = require('mout/lang/isUndefined')
 
@@ -860,7 +894,7 @@ module.exports = function() {
 
   return me
 }
-},{"mout/function/partial":27,"mout/lang/isUndefined":28}],30:[function(require,module,exports){
+},{"mout/function/partial":32,"mout/lang/isUndefined":33}],35:[function(require,module,exports){
 
 var clean = require('to-no-case');
 
@@ -885,7 +919,7 @@ function toSpaceCase (string) {
     return match ? ' ' + match : '';
   });
 }
-},{"to-no-case":31}],31:[function(require,module,exports){
+},{"to-no-case":36}],36:[function(require,module,exports){
 
 /**
  * Expose `toNoCase`.
@@ -957,9 +991,12 @@ function uncamelize (string) {
     return previous + ' ' + uppers.toLowerCase().split('').join(' ');
   });
 }
-},{}],32:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 var capitalize = require('capitalize')
 var space = require('to-space-case')
+var isBoolean = require('mout/lang/isBoolean')
+var isNumber = require('mout/lang/isNumber')
+var isString = require('mout/lang/isString')
 
 var pretty = function(logEntries) {
   return logEntries
@@ -978,12 +1015,37 @@ var pretty = function(logEntries) {
               entry.worker.name === 'expectationNotMet') return false
           return true
         }).map(function(delivery) {
+
+          var message = delivery.envelope.message
+          if (isBoolean(message)) {
+            delivery.messageClass = 'boolean'
+          } else if(isNumber(message)) {
+            delivery.messageClass = 'number'
+          } else if(isString(message)) {
+            delivery.messageClass = 'string'
+            delivery.envelope.message = '"' + message + '"'
+          } else {
+            delivery.messageClass = 'object'
+            delivery.envelope.message = JSON.stringify(message)
+          }
+
           delivery.statusText = 'on'
           return delivery;
         })
       entry.sent = entry.sent.map(function(delivery) {
 
-        delivery.jsonData = JSON.stringify(delivery.envelope.message)
+        var message = delivery.envelope.message
+        if (isBoolean(message)) {
+          delivery.messageClass = 'boolean'
+        } else if(isNumber(message)) {
+          delivery.messageClass = 'number'
+        } else if(isString(message)) {
+          delivery.messageClass = 'string'
+          delivery.envelope.message = '"' + message + '"'
+        } else {
+          delivery.messageClass = 'object'
+          delivery.envelope.message = JSON.stringify(message)
+        }
 
         if (delivery.logOnly) {
           delivery.statusText = 'Logged'
@@ -1012,4 +1074,4 @@ var pretty = function(logEntries) {
 }
 
 module.exports = pretty
-},{"capitalize":25,"to-space-case":30}]},{},[1])
+},{"capitalize":25,"mout/lang/isBoolean":26,"mout/lang/isNumber":28,"mout/lang/isString":29,"to-space-case":35}]},{},[1])

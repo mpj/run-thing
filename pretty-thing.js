@@ -21,19 +21,34 @@ var pretty = function(logEntries) {
               entry.worker.name === 'expectationNotMet') return false
           return true
         }).map(function(delivery) {
+
+          var message = delivery.envelope.message
+          if (isBoolean(message)) {
+            delivery.messageClass = 'boolean'
+          } else if(isNumber(message)) {
+            delivery.messageClass = 'number'
+          } else if(isString(message)) {
+            delivery.messageClass = 'string'
+            delivery.envelope.message = '"' + message + '"'
+          } else {
+            delivery.messageClass = 'object'
+            delivery.envelope.message = JSON.stringify(message)
+          }
+
           delivery.statusText = 'on'
           return delivery;
         })
       entry.sent = entry.sent.map(function(delivery) {
 
         var message = delivery.envelope.message
-        if (isBoolean(message))
+        if (isBoolean(message)) {
           delivery.messageClass = 'boolean'
-        else if(isNumber(message))
+        } else if(isNumber(message)) {
           delivery.messageClass = 'number'
-        else if(isString(message))
+        } else if(isString(message)) {
           delivery.messageClass = 'string'
-        else {
+          delivery.envelope.message = '"' + message + '"'
+        } else {
           delivery.messageClass = 'object'
           delivery.envelope.message = JSON.stringify(message)
         }
