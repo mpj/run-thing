@@ -33,14 +33,14 @@
         return (
           <div className="log-entry">
 
-            <div className={ 'header ' + entry.entryClass }>{entry.worker.nameFormatted}
+            <div className={ 'header ' + entry.entryLook }>{entry.worker.nameFormatted}
               <div className="ordinal">{ordinal}</div>
             </div>
 
             <div className="deliveries">
               {entry.deliveries.map(function(delivery) {
-                  var statusClasses = 'status' + ' ' + delivery.statusClass;
-                  var messageClasses = 'message ' + delivery.messageClass;
+                  var statusClasses = 'status' + ' ' + delivery.statusLook;
+                  var messageClasses = 'message ' + delivery.messageLook;
                   return (
                     <div className="delivery">
                       <div className={statusClasses}>
@@ -69,15 +69,15 @@
   var bus = createBus()
 
   bus.on('a').then('c')
-  bus.on('c').then(function wafflel() {
-    this.send('d', 'i am a little teaot and im ok and long')
+  bus.change('c').then(function wafflel() {
+    this.send('d', 'i am a little teaot and ')
     this.send('d', 9272)
     this.send('d', { poop: 123, pee: false, poor: true, hai: 'nooo'})
     this.send('x', { poop: 123})
   })
   spec()
     .given('a')
-    .expect('d')
+    .expect('x')
     .check(bus)
 
   var vm = pretty(bus.log.all())

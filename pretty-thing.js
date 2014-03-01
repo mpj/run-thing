@@ -19,9 +19,9 @@ var pretty = function(logEntries) {
     .map(function(entry) {
 
       if (entry.worker.name === 'expectationNotMet')
-        entry.entryClass = 'bad'
+        entry.entryLook = 'bad'
       if (entry.worker.name === 'expectationMet')
-        entry.entryClass = 'good'
+        entry.entryLook = 'good'
 
       entry.deliveries = entry.deliveries
         .filter(function(delivery) {
@@ -41,28 +41,28 @@ var pretty = function(logEntries) {
 
           if (delivery.logOnly) {
             delivery.statusText = 'Logged'
-            delivery.statusClass = 'normal'
+            delivery.statusLook = 'normal'
           } else if(!!delivery.sent) {
             delivery.statusText =
               delivery.couldDeliver ? 'Delivered' : 'Undeliverable'
-            delivery.statusClass = delivery.couldDeliver ?
+            delivery.statusLook = delivery.couldDeliver ?
               'different' : 'shaky'
           } else {
-            delivery.statusText = 'on'
-            delivery.statusClass = 'normal'
+            delivery.statusText = delivery.trigger
+            delivery.statusLook = 'normal'
           }
 
           var message = delivery.envelope.message
           if (isBoolean(message)) {
-            delivery.messageClass = 'boolean'
+            delivery.messageLook = 'boolean'
           } else if(isNumber(message)) {
-            delivery.messageClass = 'number'
+            delivery.messageLook = 'number'
           } else if(isString(message)) {
-            delivery.messageClass = 'string'
+            delivery.messageLook = 'string'
             delivery.envelope.message = '"' + message + '"'
           } else {
 
-            delivery.messageClass = 'object'
+            delivery.messageLook = 'object'
             delivery.envelope.message = JSON.stringify(message)
           }
           return delivery;

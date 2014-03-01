@@ -10,19 +10,15 @@ var pretty = require('./pretty-thing')
 // in an interface
 //
 
-// TODO: class -> look
 // TODO: Clean up tests and duplication
 
-// TODO: Test for change statustext normalization
-//
 // IDEA: Headers too long and big, making small messages
 // have more whitespace than they need.
-// IDEA: Make deliveries more visually distinct (color?)
-// to allow for flowing layout merging sent and received.
-// Just having sent and logged items have a slightly different
-// color might actually do it. Another way is to change the labeling
+//
+// IDEA: Another way is to change the labeling
 // of stuff to something more intuitive, such as wasSent, newSend
 // wasChanged, WasChangedOnce, wasTruthy?
+//
 // IDEA: Hide "Logged" status in Expectation worker logs?
 
 
@@ -62,9 +58,9 @@ describe('When we render the log from a simple case', function() {
     vm[0].deliveries[0].statusText.should.equal('Delivered')
   })
 
-  it('should display delivered deliveries as different statusClass', function() {
+  it('should display delivered deliveries as different statusLook', function() {
     vm[0].deliveries[0].sent.should.be.true
-    vm[0].deliveries[0].statusClass.should.equal('different')
+    vm[0].deliveries[0].statusLook.should.equal('different')
   })
 
   it('should translate null worker to anon', function() {
@@ -75,12 +71,12 @@ describe('When we render the log from a simple case', function() {
     vm[1].deliveries[0].statusText.should.equal('on')
   })
 
-  it('should show received deliveries as normal statusClass', function() {
-    vm[1].deliveries[0].statusClass.should.equal('normal')
+  it('should show received deliveries as normal statusLook', function() {
+    vm[1].deliveries[0].statusLook.should.equal('normal')
   })
 
   it('should show expectationMet worker output as good', function() {
-    vm[2].entryClass.should.equal('good')
+    vm[2].entryLook.should.equal('good')
   })
 
   it('should translate camelcase to space case', function() {
@@ -88,7 +84,7 @@ describe('When we render the log from a simple case', function() {
   })
 
   it('should display successful expectation deliveries as normal', function() {
-    vm[2].deliveries[0].statusClass.should.equal('normal')
+    vm[2].deliveries[0].statusLook.should.equal('normal')
   })
 
   it('should display successful expectation deliveries as "Logged"', function() {
@@ -113,13 +109,31 @@ describe('given that we render a log from complex send', function() {
     var entries = bus.log.all()
     vm = pretty(entries)
   })
+})
 
+describe('given that we have a change trigger', function() {
+  var vm;
+  beforeEach(function() {
+    vm = pretty(
+      createBus()
+        .change('a')
+        .then(function() {
+          this.log('b')
+        })
+        .inject('a')
+        .log.all()
+    )
+  })
+
+  it('should write it as the statusText', function() {
+    vm[0].deliveries[0].statusText.should.equal('change')
+  })
 })
 
 it('should translate couldDeliver (false) to statusText', function() {
   var vm = pretty(createBus().on('a').then('b').inject('a').log.all())
   vm[0].deliveries[1].statusText.should.equal('Undeliverable')
-  vm[0].deliveries[1].statusClass.should.equal('shaky')
+  vm[0].deliveries[1].statusLook.should.equal('shaky')
 })
 
 it('should display failing expectations as bad', function() {
@@ -133,9 +147,9 @@ it('should display failing expectations as bad', function() {
   vm[1].deliveries[0].envelope.address.should.not.equal('spec-done')
 
   vm[1].worker.nameFormatted.should.equal('Expectation not met')
-  vm[1].entryClass.should.equal('bad')
+  vm[1].entryLook.should.equal('bad')
   vm[1].deliveries[0].statusText.should.equal('Logged')
-  vm[1].deliveries[0].statusClass.should.equal('normal')
+  vm[1].deliveries[0].statusLook.should.equal('normal')
 
 })
 
@@ -179,20 +193,19 @@ describe('given that we have a worker that sends and expects a given value', fun
     })
 
     it('formats the given worker entry message', function() {
-      entryGivenSent.messageClass.should.equal('boolean')
+      entryGivenSent.messageLook.should.equal('boolean')
     })
 
     it('formats the main worker entry message', function() {
-      entryWorkerSent.messageClass.should.equal('boolean')
+      entryWorkerSent.messageLook.should.equal('boolean')
     })
 
-    // TODO: mocha is an idiot
-    //it('formats the expectation worker entry message', function() {
-      //entryExpectSent.messageClass.should.equal('boolean')
-    //})
+    it('formats the expectation worker entry message', function() {
+      entryExpectSent.messageLook.should.equal('boolean')
+    })
 
     it('formats the main worker entry received messages too', function() {
-      entryWorker.deliveries[0].messageClass.should.equal('boolean')
+      entryWorker.deliveries[0].messageLook.should.equal('boolean')
     })
 
   })
@@ -205,15 +218,15 @@ describe('given that we have a worker that sends and expects a given value', fun
     })
 
     it('formats the given worker entry message', function() {
-      entryGivenSent.messageClass.should.equal('number')
+      entryGivenSent.messageLook.should.equal('number')
     })
 
     it('formats the main worker entry message', function() {
-      entryWorkerSent.messageClass.should.equal('number')
+      entryWorkerSent.messageLook.should.equal('number')
     })
 
     it('formats the expectation worker entry message', function() {
-      entryExpectSent.messageClass.should.equal('number')
+      entryExpectSent.messageLook.should.equal('number')
     })
 
   })
@@ -226,15 +239,15 @@ describe('given that we have a worker that sends and expects a given value', fun
     })
 
     it('formats the given worker entry message', function() {
-      entryGivenSent.messageClass.should.equal('string')
+      entryGivenSent.messageLook.should.equal('string')
     })
 
     it('formats the main worker entry message', function() {
-      entryWorkerSent.messageClass.should.equal('string')
+      entryWorkerSent.messageLook.should.equal('string')
     })
 
     it('formats the expectation worker entry message', function() {
-      entryExpectSent.messageClass.should.equal('string')
+      entryExpectSent.messageLook.should.equal('string')
     })
 
     it('welds on double quotes (sent)', function() {
@@ -254,17 +267,17 @@ describe('given that we have a worker that sends and expects a given value', fun
     })
 
     it('formats the given worker entry message', function() {
-      entryGivenSent.messageClass.should.equal('object')
+      entryGivenSent.messageLook.should.equal('object')
       entryGivenSent.envelope.message.should.equal(JSON.stringify(givenValue))
     })
 
     it('formats the main worker entry message', function() {
-      entryWorkerSent.messageClass.should.equal('object')
+      entryWorkerSent.messageLook.should.equal('object')
       entryWorkerSent.envelope.message.should.equal(JSON.stringify(sendsValue))
     })
 
     it('formats the expectation worker entry message', function() {
-      entryExpectSent.messageClass.should.equal('object')
+      entryExpectSent.messageLook.should.equal('object')
       entryExpectSent.envelope.message.should.equal(JSON.stringify(sendsValue))
     })
 
