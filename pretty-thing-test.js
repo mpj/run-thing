@@ -1,5 +1,5 @@
 require('chai').should()
-
+var expect = require('chai').expect
 var spec = require('spec-thing')
 var createBus = require('bus-thing')
 var pretty = require('./pretty-thing')
@@ -16,10 +16,7 @@ var pretty = require('./pretty-thing')
 // TODO: Show failing worker as bad
 // TODO: Show met worker as good
 
-// TODO: Hide expectationNotMet if it sends nothing.
-// Perhaps this is something that the worker itself could
-// be allowed to do? this.stealth()
-//
+
 // TODO: Remove duplication in template
 // TODO: Test for change statustext normalization
 //
@@ -101,6 +98,10 @@ describe('When we render the log from a simple case', function() {
 
   it('should display successful expectation deliveries as "Logged"', function() {
     vm[2].deliveries[0].statusText.should.equal('Logged')
+  })
+
+  it('should hide expectationNotMet if it sends nothing', function() {
+    expect(vm[3]).to.not.exist
   })
 
 })

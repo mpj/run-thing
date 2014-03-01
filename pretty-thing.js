@@ -3,12 +3,17 @@ var space = require('to-space-case')
 var isBoolean = require('mout/lang/isBoolean')
 var isNumber = require('mout/lang/isNumber')
 var isString = require('mout/lang/isString')
+var find = require('mout/array/find')
 
 var pretty = function(logEntries) {
   return logEntries
     .filter(function(entry) {
       if (entry.worker.name === 'injector')
         return false
+      if (entry.worker.name === 'expectationNotMet') {
+        if (!find(entry.deliveries, { sent: true }))
+          return false;
+      }
       return true
     })
     .map(function(entry) {
