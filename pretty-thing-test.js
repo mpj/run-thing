@@ -12,12 +12,7 @@ var pretty = require('./pretty-thing')
 
 // TODO: class -> look
 // TODO: Clean up tests and duplication
-//
-// TODO: Show failing worker as bad
-// TODO: Show met worker as good
 
-
-// TODO: Remove duplication in template
 // TODO: Test for change statustext normalization
 //
 // IDEA: Headers too long and big, making small messages
