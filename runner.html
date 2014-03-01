@@ -38,21 +38,8 @@
             </div>
 
             <div className="deliveries">
-              {entry.received.map(function(delivery) {
-                  var statusClasses = 'status' + ' ' + delivery.statusLook;
-                  var messageClasses = 'message ' + delivery.messageClass;
-                  return (
-                    <div className="delivery">
-                      <div className={statusClasses}>
-                        <span>{delivery.statusText}</span></div>
-                      <div className="address">{delivery.envelope.address}</div>
-                      <div className={messageClasses}>{delivery.envelope.message.toString()}</div>
-                    </div>
-                  )
-                })
-              }
-              {entry.sent.map(function(delivery) {
-                  var statusClasses = 'status' + ' ' + delivery.statusLook
+              {entry.deliveries.map(function(delivery) {
+                  var statusClasses = 'status' + ' ' + delivery.statusClass;
                   var messageClasses = 'message ' + delivery.messageClass;
                   return (
                     <div className="delivery">
@@ -86,7 +73,7 @@
     this.send('d', 'i am a little teaot and im ok and long')
     this.send('d', 9272)
     this.send('d', { poop: 123, pee: false, poor: true, hai: 'nooo'})
-    this.send('d', { poop: 123})
+    this.send('x', { poop: 123})
   })
   spec()
     .given('a')
