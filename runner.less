@@ -41,6 +41,8 @@ html {
       padding-left: 25px;
       font-family: 'Lato', HelveticaNeue-Medium, 'Helvetica Neue Medium', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     }
+    &.bad  { background-color: @bad; }
+    &.good { background-color: @good; }
   }
 
   .deliveries {
@@ -74,9 +76,10 @@ html {
           display: inline-block;
           padding: 2px 8px 2px 4px;
         }
-        &.good { background-color: @good; }
-        &.bad  { background-color: @bad; }
-        &.shaky { background-color: @shaky }
+        &.different { background-color: @normal-darker }
+        &.good      { background-color: @good; }
+        &.bad       { background-color: @bad; }
+        &.shaky     { background-color: @shaky }
       }
       .message {
         font-size: 16px;

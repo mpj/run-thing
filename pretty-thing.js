@@ -12,6 +12,12 @@ var pretty = function(logEntries) {
       return true
     })
     .map(function(entry) {
+
+      if (entry.worker.name === 'expectationNotMet')
+        entry.entryClass = 'bad'
+      if (entry.worker.name === 'expectationMet')
+        entry.entryClass = 'good'
+
       entry.deliveries = entry.deliveries
         .filter(function(delivery) {
 
@@ -35,10 +41,10 @@ var pretty = function(logEntries) {
             delivery.statusText =
               delivery.couldDeliver ? 'Delivered' : 'Undeliverable'
             delivery.statusClass = delivery.couldDeliver ?
-              'normal' : 'shaky'
+              'different' : 'shaky'
           } else {
             delivery.statusText = 'on'
-            // TODO: Test for statusLook
+            delivery.statusClass = 'normal'
           }
 
           var message = delivery.envelope.message

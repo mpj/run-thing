@@ -10,7 +10,7 @@ var pretty = require('./pretty-thing')
 // in an interface
 //
 
-
+// TODO: class -> look
 // TODO: Clean up tests and duplication
 //
 // TODO: Show failing worker as bad
@@ -70,9 +70,9 @@ describe('When we render the log from a simple case', function() {
     vm[0].deliveries[0].statusText.should.equal('Delivered')
   })
 
-  it('should display delivered deliveries as normal status', function() {
+  it('should display delivered deliveries as different statusClass', function() {
     vm[0].deliveries[0].sent.should.be.true
-    vm[0].deliveries[0].statusClass.should.equal('normal')
+    vm[0].deliveries[0].statusClass.should.equal('different')
   })
 
   it('should translate null worker to anon', function() {
@@ -83,15 +83,23 @@ describe('When we render the log from a simple case', function() {
     vm[1].deliveries[0].statusText.should.equal('on')
   })
 
+  it('should show received deliveries as normal statusClass', function() {
+    vm[1].deliveries[0].statusClass.should.equal('normal')
+  })
+
+  it('should show expectationMet worker output as good', function() {
+    vm[2].entryClass.should.equal('good')
+  })
+
   it('should translate camelcase to space case', function() {
     vm[2].worker.nameFormatted.should.equal('Expectation met')
   })
 
-  it('should display successful expectations as normal', function() {
+  it('should display successful expectation deliveries as normal', function() {
     vm[2].deliveries[0].statusClass.should.equal('normal')
   })
 
-  it('should display successful expectations as "Logged"', function() {
+  it('should display successful expectation deliveries as "Logged"', function() {
     vm[2].deliveries[0].statusText.should.equal('Logged')
   })
 
@@ -129,6 +137,7 @@ it('should display failing expectations as bad', function() {
   vm[1].deliveries[0].envelope.address.should.not.equal('spec-done')
 
   vm[1].worker.nameFormatted.should.equal('Expectation not met')
+  vm[1].entryClass.should.equal('bad')
   vm[1].deliveries[0].statusText.should.equal('Logged')
   vm[1].deliveries[0].statusClass.should.equal('normal')
 

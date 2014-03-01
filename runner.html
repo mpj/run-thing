@@ -28,12 +28,12 @@
       var entries = this.props.entries;
       var i = 0;
       var entryElements = entries.map(function(entry) {
+
         var ordinal = ++i < 10 ? '0'+i : i
-        console.log("-entry", entry)
         return (
           <div className="log-entry">
 
-            <div className="header">{entry.worker.nameFormatted}
+            <div className={ 'header ' + entry.entryClass }>{entry.worker.nameFormatted}
               <div className="ordinal">{ordinal}</div>
             </div>
 
