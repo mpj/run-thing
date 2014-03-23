@@ -18,3 +18,5 @@ node_modules
 /runner.css
 
 .DS_Store
+
+/build/
