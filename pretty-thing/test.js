@@ -10,6 +10,10 @@ var pretty = require('./pretty-thing')
 // in an interface
 //
 
+// TODO: Clean things up a bit
+
+// TODO: Capability to render a suite of named specs
+
 // TODO: Clean up tests and duplication
 
 // IDEA: Headers too long and big, making small messages
@@ -20,10 +24,6 @@ var pretty = require('./pretty-thing')
 // wasChanged, WasChangedOnce, wasTruthy?
 //
 // IDEA: Hide "Logged" status in Expectation worker logs?
-
-
-
-//
 
 
 describe('When we render the log from a simple case', function() {
@@ -144,7 +144,7 @@ it('should display failing expectations as bad', function() {
 
   // it - Should filter out triggering expectation
   // TODO: Piggybacking, should be expectation
-  vm[1].deliveries[0].envelope.address.should.not.equal('spec-done')
+  vm[1].deliveries[0].envelope.address.should.not.equal('spec-check')
 
   vm[1].worker.nameFormatted.should.equal('Expectation not met')
   vm[1].entryLook.should.equal('bad')
