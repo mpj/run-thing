@@ -2,7 +2,7 @@ require('chai').should()
 var expect = require('chai').expect
 var spec = require('spec-thing')
 var createBus = require('bus-thing')
-var pretty = require('./pretty-thing')
+var pretty = require('./')
 
 // pretty-thing takes the log from a bus
 // after spec-thing has done a .check()
