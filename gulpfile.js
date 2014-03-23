@@ -22,6 +22,17 @@ gulp.task('less', function () {
     .pipe(gulp.dest('build'));
 });
 
+
+
+gulp.task('watch', function() {
+  gulp.watch(['pretty-thing/*.js', 'runner/*.js'], ['browserify']).on('change', function(event) {
+    console.log('Browserifying JavaScript...');
+  });
+  gulp.watch('**/*.less', ['less']).on('change', function(event) {
+    console.log('Recompiling LESS...');
+  });
+})
+
 gulp.task('default', function() {
     gulp.start('browserify', 'less');
 });
