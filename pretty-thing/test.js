@@ -1,6 +1,6 @@
 require('chai').should()
 var expect = require('chai').expect
-var spec = require('spec-thing')
+var spec = require('spec-thing').spec
 var createBus = require('bus-thing')
 var pretty = require('./')
 
@@ -8,7 +8,7 @@ var pretty = require('./')
 // after spec-thing has done a .check()
 // and yields a view model ready for rendering
 // in an interface
-//
+
 
 // TODO: Clean things up a bit
 
@@ -282,6 +282,7 @@ describe('given that we have a worker that sends and expects a given value', fun
     })
 
   })
+
 
 
 })
