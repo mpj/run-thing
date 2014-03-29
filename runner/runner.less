@@ -18,6 +18,7 @@ html {
   padding: 25px;
 }
 
+
 .log-entry {
   background-color: white;
   display: inline-block;
@@ -92,6 +93,34 @@ html {
     }
   }
 }
+
+.module-check  {
+  font-size: 26px;
+  font-weight: 300;
+}
+.module-check .run-result {
+  margin-bottom: 6pt;
+}
+
+.module-check .run-result i {
+  display: none;
+}
+
+.module-check .run-result.met i.icon-ok-circled {
+  display: inline;
+  color: @good;
+}
+
+.module-check .run-result.notmet i.icon-cancel-circled-1 {
+  display: inline;
+  color: @bad;
+}
+
+.module-check .run-result.pending i.icon-help-circled {
+  display: inline;
+  color: @shaky;
+}
+
 
 
 
