@@ -41,6 +41,7 @@ gulp.task('watch-spec', function() {
 })
 
 gulp.task('watch-browser', function() {
+  gulp.start('browserify', 'less');
   gulp.watch(['pretty-thing/*.js', 'runner/*.js'], ['browserify']).on('change', function(event) {
     console.log('Browserifying JavaScript...');
   });
