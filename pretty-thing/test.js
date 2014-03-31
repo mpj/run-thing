@@ -1,8 +1,10 @@
 require('chai').should()
 var expect = require('chai').expect
 var spec = require('spec-thing').spec
+var checkModule = require('spec-thing').checkModule
 var createBus = require('bus-thing')
 var pretty = require('./')
+var find = require('mout/array/find')
 
 // pretty-thing takes the log from a bus
 // after spec-thing has done a .check()
@@ -283,8 +285,32 @@ describe('given that we have a worker that sends and expects a given value', fun
 
   })
 
+})
 
+describe('it we prettify the results of an inspected module spec', function() {
+  var vm;
+  beforeEach(function(done) {
+    checkModule({
+      installer: function(bus) {
+        bus.on('hello').then('world')
+      },
+      specs: [
+        spec()
+          .inspect()
+          .given('hello')
+          .expect('world')
+      ]
+    }).then(function(bus) {
+      vm = pretty(bus.log.all())
+    }).done(done)
+  })
 
+  it('filters out inspecteeResolver entries', function() {
+    expect(find(vm, function(entry) {
+      return entry.worker.name === 'inspecteeResolver'
+    })).to.not.exist
+
+  })
 })
 
 

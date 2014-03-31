@@ -14,6 +14,10 @@ var pretty = function(logEntries) {
         if (!find(entry.deliveries, { sent: true }))
           return false;
       }
+
+      if (entry.worker.name === 'inspecteeResolver')
+        return false;
+
       return true
     })
     .map(function(entry) {
