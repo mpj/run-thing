@@ -18,78 +18,85 @@ html {
   padding: 25px;
 }
 
+.log-entries {
 
-.log-entry {
-  background-color: white;
-  display: inline-block;
-  float: left;
-  margin-right: 15px;
-  margin-bottom: 15px;
-  max-width: 500px;
-
-  .header {
-    background-color: black;
-    font-weight: 300;
-    color: white;
-    padding: 10px;
-    font-size: 32px;
-    line-height: 32px;
-    position: relative;
-    .ordinal {
-      float: right;
-      font-size: 20px;
-      line-height: 32px;
-      padding-left: 25px;
-      font-family: 'Lato', HelveticaNeue-Medium, 'Helvetica Neue Medium', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    }
-    &.bad  { background-color: @bad; }
-    &.good { background-color: @good; }
+  h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
   }
 
-  .deliveries {
-    padding: 15px 0 20px 30px;
-    .delivery {
-      display: inline-block;
-      margin-right: 30px;
-      margin-bottom: 15px;
-      float: left;
+  .log-entry {
+    background-color: white;
+    display: inline-block;
+    float: left;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    max-width: 500px;
 
-      .address {
-        font-size: 24px;
-        color: #2d2d2d;
-        padding-top: 4px;
-        padding-bottom: 4px;
+    .header {
+      background-color: black;
+      font-weight: 300;
+      color: white;
+      padding: 10px;
+      font-size: 32px;
+      line-height: 32px;
+      position: relative;
+      .ordinal {
+        float: right;
+        font-size: 20px;
+        line-height: 32px;
+        padding-left: 25px;
         font-family: 'Lato', HelveticaNeue-Medium, 'Helvetica Neue Medium', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-        font-weight: 400;
       }
+      &.bad  { background-color: @bad; }
+      &.good { background-color: @good; }
+    }
 
-      .status {
+    .deliveries {
+      padding: 15px 0 20px 30px;
+      .delivery {
         display: inline-block;
-        font-family: 'Lato', HelveticaNeue-Medium, 'Helvetica Neue Medium', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-        font-weight: 400;
+        margin-right: 30px;
+        margin-bottom: 15px;
+        float: left;
 
-        background-color: @normal-lighter;
-        color: white;
-        font-size: 13px;
-        letter-spacing: 0px;
-        width: 100%;
-        span {
-          display: inline-block;
-          padding: 2px 8px 2px 4px;
+        .address {
+          font-size: 24px;
+          color: #2d2d2d;
+          padding-top: 4px;
+          padding-bottom: 4px;
+          font-family: 'Lato', HelveticaNeue-Medium, 'Helvetica Neue Medium', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          font-weight: 400;
         }
-        &.different { background-color: @normal-darker }
-        &.good      { background-color: @good; }
-        &.bad       { background-color: @bad; }
-        &.shaky     { background-color: @shaky }
-      }
-      .message {
-        font-size: 16px;
-        font-family: Consolas;
-      }
-      .message.boolean { color: rgb( 190, 40, 40 ) }
-      .message.number  { color: rgb( 150, 0, 150 ) }
-      .message.string  { color: rgb( 50, 150, 80 ) }
 
+        .status {
+          display: inline-block;
+          font-family: 'Lato', HelveticaNeue-Medium, 'Helvetica Neue Medium', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          font-weight: 400;
+
+          background-color: @normal-lighter;
+          color: white;
+          font-size: 13px;
+          letter-spacing: 0px;
+          width: 100%;
+          span {
+            display: inline-block;
+            padding: 2px 8px 2px 4px;
+          }
+          &.different { background-color: @normal-darker }
+          &.good      { background-color: @good; }
+          &.bad       { background-color: @bad; }
+          &.shaky     { background-color: @shaky }
+        }
+        .message {
+          font-size: 16px;
+          font-family: Consolas;
+        }
+        .message.boolean { color: rgb( 190, 40, 40 ) }
+        .message.number  { color: rgb( 150, 0, 150 ) }
+        .message.string  { color: rgb( 50, 150, 80 ) }
+
+      }
     }
   }
 }

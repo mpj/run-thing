@@ -297,6 +297,7 @@ describe('it we prettify the results of an inspected module spec', function() {
       specs: [
         spec()
           .inspect()
+          .describe('given hello, expect world')
           .given('hello')
           .expect('world')
       ]
@@ -309,7 +310,17 @@ describe('it we prettify the results of an inspected module spec', function() {
     expect(find(vm, function(entry) {
       return entry.worker.name === 'inspecteeResolver'
     })).to.not.exist
+  })
 
+  it('filters out spec-description', function() {
+    expect(find(vm, function(entry) {
+      return entry.deliveries[0].envelope.address
+        === 'spec-description'
+    })).to.not.exist
+  })
+
+  it('show description as property', function() {
+    vm.description.should.equal('given hello, expect world')
   })
 })
 

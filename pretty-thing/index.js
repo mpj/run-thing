@@ -6,10 +6,11 @@ var isString = require('mout/lang/isString')
 var find = require('mout/array/find')
 
 var pretty = function(logEntries) {
-  return logEntries
+  var description;
+  var entries = logEntries
     .filter(function(entry) {
       if (entry.worker.name === 'injector')
-        return false
+        return false;
       if (entry.worker.name === 'expectationNotMet') {
         if (!find(entry.deliveries, { sent: true }))
           return false;
@@ -17,6 +18,17 @@ var pretty = function(logEntries) {
 
       if (entry.worker.name === 'inspecteeResolver')
         return false;
+
+      var descriptionDelivery = find(entry.deliveries, function(delivery) {
+        return delivery.sent &&
+               delivery.envelope.address === 'spec-description'
+      })
+
+
+      if (descriptionDelivery) {
+        description = descriptionDelivery.envelope.message;
+        return false
+      }
 
       return true
     })
@@ -80,6 +92,8 @@ var pretty = function(logEntries) {
         : capitalize(space(entry.worker.name))
       return entry
     })
+  entries.description = description;
+  return entries
 
 
 

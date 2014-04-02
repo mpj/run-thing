@@ -83,7 +83,10 @@
         )
       })
       return (
-        <div>{entryElements}</div>
+        <div className="log-entries">
+          <h1>{entries.description}</h1>
+          <div>{entryElements}</div>
+        </div>
       );
     }
   });
