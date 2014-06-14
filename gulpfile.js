@@ -2,6 +2,7 @@ var gulp = require('gulp');
 
 var browserify = require('gulp-browserify');
 var less = require('gulp-less');
+var coffee = require('gulp-coffee');
 var mocha = require('gulp-mocha');
 var path = require('path');
 
@@ -27,6 +28,13 @@ gulp.task('less', function () {
     .pipe(gulp.dest('build'));
 });
 
+gulp.task('coffee', function() {
+  gulp.src('./server/*.coffee')
+    .pipe(coffee({bare: true}))
+    .pipe(gulp.dest('./build/'))
+});
+
+
 gulp.task('spec', function() {
   gulp.src('pretty-thing/test.js')
     .pipe(mocha({reporter: 'spec'}));
@@ -51,5 +59,5 @@ gulp.task('watch-browser', function() {
 })
 
 gulp.task('default', function() {
-    gulp.start('browserify', 'less');
+    gulp.start('browserify', 'less', 'coffee');
 });

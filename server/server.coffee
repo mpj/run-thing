@@ -28,7 +28,6 @@ staticMap =
   '/jquery.js':                '../vendor/jquery-1.11.0.min.js'
   '/':                         '../runner/runner.html'
 
-
 getMimeType = (path) ->
   mimes =
     'js': 'text/javascript',

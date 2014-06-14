@@ -4,6 +4,7 @@
   "description": "A thing that runs things?",
   "main": "index.js",
   "scripts": {
+    "prepublish": "gulp",
     "test": "mocha"
   },
   "repository": {
@@ -23,7 +24,11 @@
     "to-space-case": "~0.1.3",
     "spec-thing": "~1.0.0",
     "faye": "~1.0.1",
-    "open": "0.0.5"
+    "open": "0.0.5",
+    "gulp-coffee": "~2.0.1"
+  },
+  "bin": {
+    "pipecheck": "build/server.js"
   },
   "devDependencies": {
     "mocha": "~1.17.1",
