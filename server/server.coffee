@@ -18,14 +18,15 @@ subscribePath = '/file-changes'
 
 staticMap =
   '/faye.js':                  'faye/browser/faye-browser-min.js'
-  '/runner.css':               'build/runner.css'
-  '/react-with-addons.js':     'vendor/react-0.9.0/build/react-with-addons.js'
-  '/JSXTransformer.js':        'vendor/react-0.9.0/build/JSXTransformer.js'
-  '/inspector-json.css':        'vendor/inspector-json/inspector-json.css'
-  '/inspector-json.js':         'vendor/inspector-json/inspector-json.js'
-  '/dependencies.js':           'build/dependencies.js'
-  '/jquery.js':                 'vendor/jquery-1.11.0.min.js'
-  '/':                           'runner/runner.html'
+  '/runner.css':               '../build/runner.css'
+  '/fontello.css':             '../vendor/fontello-846dd1e9/css/fontello.css'
+  '/react-with-addons.js':     '../vendor/react-0.9.0/build/react-with-addons.js'
+  '/JSXTransformer.js':        '../vendor/react-0.9.0/build/JSXTransformer.js'
+  '/inspector-json.css':       '../vendor/inspector-json/inspector-json.css'
+  '/inspector-json.js':        '../vendor/inspector-json/inspector-json.js'
+  '/dependencies.js':          '../build/dependencies.js'
+  '/jquery.js':                '../vendor/jquery-1.11.0.min.js'
+  '/':                         '../runner/runner.html'
 
 
 getMimeType = (path) ->
