@@ -1,5 +1,5 @@
-module.exports = {
-  installer: function(bus) {
+
+pipelet.installer = function(bus) {
     bus.on('team-name').then(function init(x) {
       this.send('render', {
         header: x,
@@ -15,27 +15,24 @@ module.exports = {
       this.send('x', 1234)
     })
     bus.on('b').then(function david(x) {
-      this.send('summering', x+5)
+      this.send('summering', x+6)
     })
   },
-  specs: [
-    spec()
-      .describe('Given a')
-      .given('team-name', 'Fesk')
-      .expect('render', {
-        header: 'Fesk'
-      })
-      .inspect()
 
-      ,
-    spec()
-      .describe('Given a, expect x (specific number)')
-      .given('a')
-      .expect('x',1234),
+pipelet.specs = [
+  spec()
+    .describe('Given a')
+    .given('team-name', 'Fesk')
+    .expect('render', { header: 'Fesk' })
+    .inspect()
+    ,
+  spec()
+    .describe('Given a, expect x (specific number)')
+    .given('a')
+    .expect('x',1234),
 
-    spec()
-      .describe('Do some future stuff here, not sure really')
-      .given('b')
-      .expect('summering', 6)
-  ]
-}
+  spec()
+    .describe('Do some future stuff here, not sure really')
+    .given('b')
+    .expect('summering', 6)
+]

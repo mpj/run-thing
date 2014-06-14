@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="../vendor/fontello-846dd1e9/css/fontello.css">
   <script src="../vendor/react-0.9.0/build/react-with-addons.js"></script>
   <script src="../vendor/react-0.9.0/build/JSXTransformer.js"></script>
+  <script src="http://localhost:8000/faye.js"></script>
 </head>
 
 <body>
@@ -85,31 +86,41 @@
     }
   });
 
-  checkModule(exampleModule).then(function(obj) {
-    if (!!obj.log) {
-      var entries = pretty(obj.log.all())
-      React.renderComponent(
-        <LogEntries entries={entries} />,
-        document.getElementById('renderTarget')
-      );
-      $('.message.object').each(function(_, element) {
-        var inspector = new InspectorJSON({
-          element: element,
-          json: $(element).text(),
-          collapsed: true
-        });
-      })
-    } else {
-      React.renderComponent(
-        <ModuleCheck results={obj} />,
-        document.getElementById('renderTarget')
-      );
-    }
-  }).done()
+  function exec(module) {
+    checkModule(module).then(function(obj) {
+      if (!!obj.log) {
+        var entries = pretty(obj.log.all())
+        React.renderComponent(
+          <LogEntries entries={entries} />,
+          document.getElementById('renderTarget')
+        );
+        $('.message.object').each(function(_, element) {
+          var inspector = new InspectorJSON({
+            element: element,
+            collapsed: true
+          });
+        })
+      } else {
+        React.renderComponent(
+          <ModuleCheck results={obj} />,
+          document.getElementById('renderTarget')
+        );
+      }
+    }).done()
+  }
+
+
+  var client = new Faye.Client('http://localhost:8000/file-changes');
+
+  client.subscribe('/file-changes', function(message) {
+    var pipelet = {};
+    eval(message)
+    exec(pipelet)
+  });
 
   </script>
 
-  <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+
 
 </body>
 </html>
