@@ -1,6 +1,7 @@
 http = require('http')
 faye = require('faye')
 fs = require 'fs'
+open = require 'open'
 
 process.on 'uncaughtException', (err) ->
   console.warn "UNCAUGHT EXCEPTION", err
@@ -15,14 +16,33 @@ if not fs.existsSync(fileName)
 
 subscribePath = '/file-changes'
 
+staticMap =
+  '/faye.js':                  'faye/browser/faye-browser-min.js'
+  '/runner.css':               'build/runner.css'
+  '/react-with-addons.js':     'vendor/react-0.9.0/build/react-with-addons.js'
+  '/JSXTransformer.js':        'vendor/react-0.9.0/build/JSXTransformer.js'
+  '/inspector-json.css':        'vendor/inspector-json/inspector-json.css'
+  '/inspector-json.js':         'vendor/inspector-json/inspector-json.js'
+  '/dependencies.js':           'build/dependencies.js'
+  '/jquery.js':                 'vendor/jquery-1.11.0.min.js'
+  '/':                           'runner/runner.html'
+
+
+getMimeType = (path) ->
+  mimes =
+    'js': 'text/javascript',
+    'css': 'text/css'
+  ending = path.match(/(?!\.)([a-z]+)$/)[1]
+  mimes[ending]
+
 onNonFayeResponse = (request, response) ->
-  if request.url is '/faye.js'
-    filePath = require.resolve 'faye/browser/faye-browser-min.js'
+  unresolvedPath = staticMap[request.url]
+  if unresolvedPath
+    filePath = require.resolve unresolvedPath
     stat = fs.statSync filePath
-    response.writeHead(200, {
-        'Content-Type': 'text/javascript',
-        'Content-Length': stat.size
-    });
+    response.writeHead 200,
+      'Content-Type':  getMimeType filePath
+      'Content-Length': stat.size
     readStream = fs.createReadStream filePath
     readStream.pipe(response);
   else
@@ -50,5 +70,5 @@ opts =
 fs.watchFile fileName, opts, doPush
 
 bayeux.on 'subscribe', doPush
-
 console.log 'Server listening on port 8000'
+open 'http://localhost:8000'

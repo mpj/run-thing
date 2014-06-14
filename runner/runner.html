@@ -1,23 +1,28 @@
 <html>
 <head>
-  <link rel="stylesheet" href="../vendor/inspector-json/inspector-json.css">
-  <link rel="stylesheet" href="../build/runner.css">
+
+  <title>Runner</title>
+
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <link href='http://fonts.googleapis.com/css?family=Lato:300,400' rel='stylesheet' type='text/css'>
-  <script src="../vendor/react-0.9.0/build/react-with-addons.js"></script>
-  <script src="../vendor/react-0.9.0/build/JSXTransformer.js"></script>
-  <script src="http://localhost:8000/faye.js"></script>
+  <link rel="stylesheet" href="/inspector-json.css">
+  <link rel="stylesheet" href="/runner.css">
+
+  <script src="/react-with-addons.js"></script>
+  <script src="/JSXTransformer.js"></script>
+  <script src="/faye.js"></script>
 </head>
 
 <body>
 
   <div id="renderTarget"></div>
 
-  <script src="../build/dependencies.js"></script>
-  <script src="../vendor/inspector-json/inspector-json.js"></script>
-  <script src="../vendor/jquery-1.11.0.min.js"></script>
+  <script src="/dependencies.js"></script>
+  <script src="/inspector-json.js"></script>
+  <script src="/jquery.js"></script>
   <script type="text/jsx">
   /** @jsx React.DOM */
 
@@ -109,7 +114,7 @@
   }
 
 
-  var client = new Faye.Client('http://localhost:8000/file-changes');
+  var client = new Faye.Client('/file-changes');
 
   client.subscribe('/file-changes', function(message) {
     var pipelet = {};
