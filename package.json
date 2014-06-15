@@ -25,7 +25,9 @@
     "spec-thing": ">=1",
     "faye": "~1.0.1",
     "open": "0.0.5",
-    "gulp-coffee": "~2.0.1"
+    "gulp-coffee": "~2.0.1",
+    "gulp-insert": "~0.3.0",
+    "gulp-chmod": "~0.2.1"
   },
   "bin": {
     "pipecheck": "build/server.js"
