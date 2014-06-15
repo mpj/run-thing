@@ -1,10 +1,11 @@
 var gulp = require('gulp');
-
 var browserify = require('gulp-browserify');
 var less = require('gulp-less');
 var coffee = require('gulp-coffee');
 var mocha = require('gulp-mocha');
 var path = require('path');
+var insert = require('gulp-insert');
+var chmod = require('gulp-chmod');
 
 function clearConsole() {
   process.stdout.write('\u001B[2J\u001B[0;0f');
@@ -31,6 +32,8 @@ gulp.task('less', function () {
 gulp.task('coffee', function() {
   gulp.src('./server/*.coffee')
     .pipe(coffee({bare: true}))
+    .pipe(insert.prepend('#!/usr/bin/env node\n'))
+    .pipe(chmod(755))
     .pipe(gulp.dest('./build/'))
 });
 
