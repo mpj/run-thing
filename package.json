@@ -1,6 +1,6 @@
 {
   "name": "run-thing",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A thing that runs things?",
   "main": "index.js",
   "scripts": {
